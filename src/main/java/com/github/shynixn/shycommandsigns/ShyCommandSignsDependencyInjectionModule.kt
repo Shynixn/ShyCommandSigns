@@ -17,13 +17,13 @@ import com.github.shynixn.mcutils.packet.impl.service.ChatMessageServiceImpl
 import com.github.shynixn.mcutils.packet.impl.service.PacketServiceImpl
 import com.github.shynixn.shycommandsigns.contract.ShyCommandSignFactory
 import com.github.shynixn.shycommandsigns.contract.ShyCommandSignService
+import com.github.shynixn.shycommandsigns.contract.ShyCommandSignsLanguage
 import com.github.shynixn.shycommandsigns.entity.ShyCommandSignMeta
 import com.github.shynixn.shycommandsigns.entity.ShyCommandSignSettings
 import com.github.shynixn.shycommandsigns.impl.commandexecutor.ShyCommandSignCommandExecutor
 import com.github.shynixn.shycommandsigns.impl.listener.ShyCommandSignListener
 import com.github.shynixn.shycommandsigns.impl.service.ShyCommandSignFactoryImpl
 import com.github.shynixn.shycommandsigns.impl.service.ShyCommandSignServiceImpl
-import com.github.shynixn.shycommandsigns.contract.ShyCommandSignsLanguage
 import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.ServicePriority
@@ -45,6 +45,7 @@ class ShyCommandSignsDependencyInjectionModule(
         // Repositories
         val templateRepositoryImpl = YamlFileRepositoryImpl<ShyCommandSignMeta>(
             plugin,
+            "sign",
             plugin.dataFolder.toPath().resolve("sign"),
             settings.defaultSigns,
             emptyList(),
@@ -65,13 +66,13 @@ class ShyCommandSignsDependencyInjectionModule(
             )
         }
         module.addService<ShyCommandSignListener> {
-            ShyCommandSignListener(module.getService(), module.getService(), module.getService())
+            ShyCommandSignListener(module.getService(), module.getService(), module.getService(), module.getService())
         }
         module.addService<ShyCommandSignFactory> {
             ShyCommandSignFactoryImpl(module.getService(), module.getService())
         }
         module.addService<ShyCommandSignService> {
-            ShyCommandSignServiceImpl(module.getService(), module.getService(), module.getService(), module.getService(), module.getService())
+            ShyCommandSignServiceImpl(module.getService(), module.getService(), module.getService())
         }
 
         // Library Services
@@ -85,10 +86,16 @@ class ShyCommandSignsDependencyInjectionModule(
 
         // Developer Api.
         Bukkit.getServicesManager().register(
-            ShyCommandSignService::class.java, module.getService<ShyCommandSignService>(), plugin, ServicePriority.Normal
+            ShyCommandSignService::class.java,
+            module.getService<ShyCommandSignService>(),
+            plugin,
+            ServicePriority.Normal
         )
         Bukkit.getServicesManager().register(
-            ShyCommandSignFactory::class.java, module.getService<ShyCommandSignFactory>(), plugin, ServicePriority.Normal
+            ShyCommandSignFactory::class.java,
+            module.getService<ShyCommandSignFactory>(),
+            plugin,
+            ServicePriority.Normal
         )
 
         return module

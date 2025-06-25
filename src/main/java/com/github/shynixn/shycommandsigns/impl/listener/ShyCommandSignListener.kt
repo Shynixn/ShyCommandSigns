@@ -1,20 +1,25 @@
 package com.github.shynixn.shycommandsigns.impl.listener
 
-import com.github.shynixn.mcutils.common.Vector3d
+import com.github.shynixn.mccoroutine.folia.launch
+import com.github.shynixn.mcutils.common.command.CommandService
+import com.github.shynixn.mcutils.common.placeholder.PlaceHolderService
+import com.github.shynixn.mcutils.common.toLocation
 import com.github.shynixn.shycommandsigns.contract.ShyCommandSignService
-import com.github.shynixn.shycommandsigns.entity.ShyCommandSignSettings
 import com.github.shynixn.shycommandsigns.event.ShyCommandSignsDestroyEvent
+import org.bukkit.Location
 import org.bukkit.block.Sign
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.plugin.Plugin
 
 class ShyCommandSignListener(
-    private val settings: ShyCommandSignSettings,
     private val plugin: Plugin,
-    private val signService: ShyCommandSignService
+    private val signService: ShyCommandSignService,
+    private val commandService: CommandService,
+    private val placeHolderService: PlaceHolderService
 ) : Listener {
     @EventHandler
     fun onSignClickEvent(event: PlayerInteractEvent) {
@@ -26,25 +31,36 @@ class ShyCommandSignListener(
         }
 
         val player = event.player
+        val signLocation = Location(
+            signState.world, signState.block.x.toDouble(), signState.block.y.toDouble(), signState.block.z.toDouble()
+        )
 
-
-
-
-
-        if (signService.rightClickPlayers.containsKey(player)) {
-            val f = signService.rightClickPlayers.remove(player)!!
-            val signMeta = SignMeta()
-            signMeta.location = Vector3d(
-                signState.world.name,
-                signState.block.x.toDouble(),
-                signState.block.y.toDouble(),
-                signState.block.z.toDouble()
-            )
-            f.invoke(signMeta)
+        if (signService.isRequestingSign(player)) {
+            plugin.launch {
+                signService.addCommandSignLocation(player, signLocation)
+            }
             return
         }
 
-        signService.executeSign(signState.location, player)
+        val sign = signService.getSignByLocation(signLocation) ?: return
+
+        if (event.action == Action.LEFT_CLICK_BLOCK) {
+            commandService.executeCommands(
+                listOf(player), sign.leftClickCommands
+            ) { t, p -> placeHolderService.resolvePlaceHolder(t, p) }
+        }
+
+        if (event.action == Action.RIGHT_CLICK_BLOCK) {
+            commandService.executeCommands(
+                listOf(player), sign.rightClickCommands
+            ) { t, p -> placeHolderService.resolvePlaceHolder(t, p) }
+        }
+
+        if (event.action == Action.LEFT_CLICK_BLOCK || event.action == Action.RIGHT_CLICK_BLOCK) {
+            commandService.executeCommands(
+                listOf(player), sign.clickCommands
+            ) { t, p -> placeHolderService.resolvePlaceHolder(t, p) }
+        }
     }
 
     @EventHandler
@@ -54,6 +70,8 @@ class ShyCommandSignListener(
 
     @EventHandler
     fun onSignDestroy(event: ShyCommandSignsDestroyEvent) {
-        signService.clearData(event.player)
+        plugin.launch {
+            signService.removeCommandSignLocation(event.signLocation.location.toLocation())
+        }
     }
 }

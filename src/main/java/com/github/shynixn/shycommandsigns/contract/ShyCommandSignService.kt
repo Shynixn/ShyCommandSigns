@@ -1,6 +1,5 @@
 package com.github.shynixn.shycommandsigns.contract
 
-import com.github.shynixn.shycommandsigns.entity.ShyCommandSignTag
 import org.bukkit.Location
 import org.bukkit.entity.Player
 
@@ -16,7 +15,27 @@ interface ShyCommandSignService : AutoCloseable {
     fun clearData(player: Player)
 
     /**
+     * Adds a new sign request.
+     */
+    fun addSignRequest(player: Player, signMetaName: String, keyValuePair: Pair<String, String>)
+
+    /**
+     *  Checks if the player is requesting a sign.
+     */
+    fun isRequestingSign(player: Player): Boolean
+
+    /**
+     * Gets the sign by location.
+     */
+    fun getSignByLocation(location: Location): ShyCommandSign?
+
+    /**
      * Adds a new location to one of the command signs.
      */
-    suspend fun addCommandSignLocation(name: String, location: Location, tags : List<ShyCommandSignTag>)
+    suspend fun addCommandSignLocation(player: Player, location: Location)
+
+    /**
+     * Removes the location from any command signs.
+     */
+    suspend fun removeCommandSignLocation(location: Location)
 }

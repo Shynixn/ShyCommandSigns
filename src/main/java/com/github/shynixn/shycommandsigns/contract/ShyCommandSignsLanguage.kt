@@ -4,39 +4,29 @@ import com.github.shynixn.mcutils.common.language.LanguageItem
 import com.github.shynixn.mcutils.common.language.LanguageProvider
 
 interface ShyCommandSignsLanguage : LanguageProvider {
-  var shyBossBarPlayerNotFoundMessage: LanguageItem
+  var shyCommandSignsPlayerNotFoundMessage: LanguageItem
 
-  var shyBossBarNoPermissionCommand: LanguageItem
+  var shyCommandSignsNoPermissionCommand: LanguageItem
 
-  var shyBossBarReloadCommandHint: LanguageItem
+  var shyCommandSignsReloadCommandHint: LanguageItem
 
-  var shyBossBarReloadMessage: LanguageItem
+  var shyCommandSignsReloadMessage: LanguageItem
 
-  var shyBossBarCommonErrorMessage: LanguageItem
+  var shyCommandSignsCommonErrorMessage: LanguageItem
 
-  var shyBossBarCommandSenderHasToBePlayer: LanguageItem
+  var shyCommandSignsCommandSenderHasToBePlayer: LanguageItem
 
-  var shyBossBarCommandUsage: LanguageItem
+  var shyCommandSignsCommandUsage: LanguageItem
 
-  var shyBossBarCommandDescription: LanguageItem
+  var shyCommandSignsCommandDescription: LanguageItem
 
-  var shyBossBarAddCommandHint: LanguageItem
+  var shyCommandSignsAddCommandHint: LanguageItem
 
-  var shyBossBarSetCommandHint: LanguageItem
+  var shyCommandSignsNotFoundMessage: LanguageItem
 
-  var shyBossBarRemoveCommandHint: LanguageItem
+  var shyCommandSignsBooleanNotFoundMessage: LanguageItem
 
-  var shyBossBarNotFoundMessage: LanguageItem
+  var shyCommandSignsRightClickOnSign: LanguageItem
 
-  var shyBossBarNoPermissionToBossBarCommand: LanguageItem
-
-  var shyBossBarAddedMessage: LanguageItem
-
-  var shyBossBarRemovedMessage: LanguageItem
-
-  var shyBossBarUpdateCommandHint: LanguageItem
-
-  var shyBossBarUpdatedMessage: LanguageItem
-
-  var shyBossBarBooleanNotFoundMessage: LanguageItem
+  var shyCommandSignsRightClickOnSignSuccess: LanguageItem
 }

@@ -1,6 +1,5 @@
 package com.github.shynixn.shycommandsigns.contract
 
-import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.command.CommandMeta
 import com.github.shynixn.shycommandsigns.entity.ShyCommandSignLocation
 
