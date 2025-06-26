@@ -31,6 +31,12 @@ class ShyCommandSignListener(
         }
 
         val player = event.player
+
+        if (signService.isInCooldown(player)) {
+            return
+        }
+
+        signService.addCooldown(player)
         val signLocation = Location(
             signState.world, signState.block.x.toDouble(), signState.block.y.toDouble(), signState.block.z.toDouble()
         )

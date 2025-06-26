@@ -9,18 +9,21 @@ import com.github.shynixn.shycommandsigns.contract.ShyCommandSignService
 import com.github.shynixn.shycommandsigns.contract.ShyCommandSignsLanguage
 import com.github.shynixn.shycommandsigns.entity.ShyCommandSignLocation
 import com.github.shynixn.shycommandsigns.entity.ShyCommandSignMeta
+import com.github.shynixn.shycommandsigns.entity.ShyCommandSignSettings
 import com.github.shynixn.shycommandsigns.entity.ShyCommandSignTag
 import org.bukkit.Location
 import org.bukkit.entity.Player
+import java.util.*
 
 class ShyCommandSignServiceImpl(
     private val repository: CacheRepository<ShyCommandSignMeta>,
     private val signFactory: ShyCommandSignFactory,
-    private val language: ShyCommandSignsLanguage
+    private val language: ShyCommandSignsLanguage,
+    private val settings: ShyCommandSignSettings
 ) : ShyCommandSignService {
     private val commandSigns = HashMap<String, HashMap<Int, HashMap<Int, HashMap<Int, ShyCommandSign>>>>()
     private val rightClickCache = HashMap<Player, Pair<String, Pair<String, String>>>()
-    private val coolDown = HashSet<Player>()
+    private val coolDown = HashMap<Player, Long>()
 
     /**
      * Reloads all shyCommandSigns and configuration.
@@ -73,6 +76,22 @@ class ShyCommandSignServiceImpl(
      */
     override fun isRequestingSign(player: Player): Boolean {
         return rightClickCache.containsKey(player)
+    }
+
+    /**
+     * Checks if the player is in cooldown.
+     */
+    override fun isInCooldown(player: Player): Boolean {
+        val timestamp = coolDown[player] ?: return false
+        val now = Date().time
+        return now - timestamp > (this.settings.coolDownTicks * 50)
+    }
+
+    /**
+     * Sets the player to cooldown.
+     */
+    override fun addCooldown(player: Player) {
+        coolDown[player] = Date().time
     }
 
     /**

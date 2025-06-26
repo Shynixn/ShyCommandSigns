@@ -1,21 +1,34 @@
-# Unique identifier of a bossbar.
-name: "sample_bossbar"
-# Possible types: GLOBAL, COMMAND, WORLDGUARD
-# If GLOBAl, the bossbar is always visible as long as the player has got the permission shybossbar.bossbar.sample_bossbar.
-# If COMMAND, the bossbar is only visible after executing the command /shybossbar add sample_bossbar AND having the permission shybossbar.bossbar.sample_bossbar.
-# If WORLDGUARD, the bossbar is only visible after entering a WorldGuard region where the flag shybossbar has been set to this bossbar name.
-type: "GLOBAL"
-# If multiple bossbars would be available, the one with the highest priority (lowest number), is selected.
-priority: 5
-# The Minecraft ticks how often this bossbar is updated to the player. (1 tick = 50ms)
+# Unique identifier of a sign
+name: "sample_sign"
+# The 4 lines, which are displayed on the sign. They support color codes, HTML color codes and PlaceHolderApi placeholders.
+lines:
+  - "&e&lSample Sign"
+  - "#EE82EE HTML color"
+  - "%placeholder%"
+  - "%tag_blockball%"
+# How often this sign is updated in ticks. e.g. resolving placeholder values.
 refreshTicks: 60
-# Displayed Message. Supports placeholders.
-message: "&aSample BossBar"
-# Color of the bossBar. Supports placeholders. Possibles values: PINK,BLUE,RED,GREEN,YELLOW,PURPLE,WHITE.
-color: "WHITE"
-# Progress of the BossBar in the range 0.0 to 1.0. Supports placeholders and should be a text value.
-progress: "1.0"
-# Style of the BossBar. Supports placeholders. Possibles values: PROGRESS, NOTCHED_6, NOTCHED_10, NOTCHED_12, NOTCHED_20
-style: "PROGRESS"
-# List of flags of a BossBar. Possibles values: DARKEN_SKY, PLAY_BOSS_MUSIC, CREATE_FOG
-flags: []
+# A list of commands, which get executed on right or left click. A command always starts with a slash. Possible values for type SERVER, SERVER_PER_PLAYER, PER_PLAYER.
+clickCommands:
+  - type: SERVER_PER_PLAYER
+    command: "/say %shycommandsigns_player_name% Hello Player %shycommandsigns_player_name%."
+    cooldown: 0
+    delay: 0
+  - type: PER_PLAYER
+    command: "/tell %shycommandsigns_player_name% Hello Player %shycommandsigns_player_name%."
+    cooldown: 0
+    delay: 0
+# A list of commands, which get executed on left click. A command always starts with a slash. Possible values for type SERVER, SERVER_PER_PLAYER, PER_PLAYER.
+leftClickCommands:
+  - type: PER_PLAYER
+    command: "/tell %shycommandsigns_player_name% [left] You could define minigame join commands here."
+    cooldown: 0
+    delay: 0
+# A list of commands, which get executed on right click. A command always starts with a slash. Possible values for type SERVER, SERVER_PER_PLAYER, PER_PLAYER.
+rightClickCommands:
+  - type: PER_PLAYER
+    command: "/tell %shycommandsigns_player_name% [right] You could define minigame join commands here."
+    cooldown: 0
+    delay: 0
+# Do not modify this location list. Use the command '/shycommandsigns add sample_sign' ingame instead. This list stores all sign locations.
+locations: []

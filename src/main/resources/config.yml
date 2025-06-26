@@ -15,3 +15,11 @@ commands:
   shycommandsigns:
     aliases:
       - "scsign"
+
+
+############################
+# Global Sign Settings
+############################
+global:
+  # How often a clicks on signs are registered.
+  clickCooldownTicks: 30

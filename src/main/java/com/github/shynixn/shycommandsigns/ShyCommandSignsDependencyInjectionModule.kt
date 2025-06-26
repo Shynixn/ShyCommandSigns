@@ -72,7 +72,12 @@ class ShyCommandSignsDependencyInjectionModule(
             ShyCommandSignFactoryImpl(module.getService(), module.getService())
         }
         module.addService<ShyCommandSignService> {
-            ShyCommandSignServiceImpl(module.getService(), module.getService(), module.getService())
+            ShyCommandSignServiceImpl(
+                module.getService(),
+                module.getService(),
+                module.getService(),
+                module.getService()
+            )
         }
 
         // Library Services

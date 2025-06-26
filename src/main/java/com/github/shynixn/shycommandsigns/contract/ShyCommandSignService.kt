@@ -25,6 +25,16 @@ interface ShyCommandSignService : AutoCloseable {
     fun isRequestingSign(player: Player): Boolean
 
     /**
+     * Checks if the player is in cooldown.
+     */
+    fun isInCooldown(player: Player): Boolean
+
+    /**
+     * Sets the player to cooldown.
+     */
+    fun addCooldown(player: Player)
+
+    /**
      * Gets the sign by location.
      */
     fun getSignByLocation(location: Location): ShyCommandSign?

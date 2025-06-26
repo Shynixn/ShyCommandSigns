@@ -102,7 +102,9 @@ class ShyCommandSignsPlugin : JavaPlugin() {
 
         // Module
         val plugin = this
-        val settings = ShyCommandSignSettings { _ -> }
+        val settings = ShyCommandSignSettings { settings ->
+            settings.coolDownTicks = plugin.config.getInt("global.clickCooldownTicks")
+        }
         settings.reload()
         val placeHolderService = PlaceHolderServiceImpl(this)
         this.module = ShyCommandSignsDependencyInjectionModule(

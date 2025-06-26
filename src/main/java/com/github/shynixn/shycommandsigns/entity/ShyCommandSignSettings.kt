@@ -4,14 +4,14 @@ import com.github.shynixn.shycommandsigns.enumeration.Permission
 
 class ShyCommandSignSettings(private val reloadFun: (ShyCommandSignSettings) -> Unit) {
     /**
-     * Delay when joining the server.
-     */
-    var joinDelaySeconds = 3
-
-    /**
      * Base Command.
      */
     var baseCommand: String = "shycommandsigns"
+
+    /**
+     * Cool down how often a sign can be clicked.
+     */
+    var coolDownTicks: Int = 25
 
     /**
      * Command aliases.
