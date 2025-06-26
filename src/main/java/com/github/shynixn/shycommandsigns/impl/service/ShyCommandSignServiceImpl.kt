@@ -21,7 +21,7 @@ class ShyCommandSignServiceImpl(
     private val language: ShyCommandSignsLanguage,
     private val settings: ShyCommandSignSettings
 ) : ShyCommandSignService {
-    private val commandSigns = HashMap<String, HashMap<Int, HashMap<Int, HashMap<Int, ShyCommandSign>>>>()
+    private val commandSigns = HashMap<String, ShyCommandSign>()
     private val rightClickCache = HashMap<Player, Pair<String, Pair<String, String>>>()
     private val coolDown = HashMap<Player, Long>()
 
@@ -37,21 +37,8 @@ class ShyCommandSignServiceImpl(
 
             for (locationData in meta.locations) {
                 val location = locationData.location
-                if (!commandSigns.containsKey(location.world)) {
-                    commandSigns[location.world!!] = HashMap()
-                }
-
-                if (!commandSigns[location.world]!!.containsKey(location.blockX)) {
-                    commandSigns[location.world!!]!![location.blockX] = HashMap()
-                }
-
-                if (!commandSigns[location.world]!![location.blockX]!!.containsKey(location.blockY)) {
-                    commandSigns[location.world!!]!![location.blockX]!![location.blockY] = HashMap()
-                }
-
-                if (!commandSigns[location.world]!![location.blockX]!![location.blockY]!!.containsKey(location.blockZ)) {
-                    commandSigns[location.world!!]!![location.blockX]!![location.blockY]!![location.blockZ] = sign
-                }
+                val key = "${location.world}-${location.x}-${location.y}-${location.z}"
+                commandSigns[key] = sign
             }
         }
     }
@@ -84,7 +71,7 @@ class ShyCommandSignServiceImpl(
     override fun isInCooldown(player: Player): Boolean {
         val timestamp = coolDown[player] ?: return false
         val now = Date().time
-        return now - timestamp > (this.settings.coolDownTicks * 50)
+        return now - timestamp < (this.settings.coolDownTicks * 50)
     }
 
     /**
@@ -98,10 +85,8 @@ class ShyCommandSignServiceImpl(
      * Gets the sign by location.
      */
     override fun getSignByLocation(location: Location): ShyCommandSign? {
-        val xSet = commandSigns[location.world!!.name] ?: return null
-        val ySet = xSet[location.blockX] ?: return null
-        val zSet = ySet[location.blockY] ?: return null
-        return zSet[location.blockZ]
+        val key = "${location.world!!.name}-${location.x}-${location.y}-${location.z}"
+        return commandSigns[key]
     }
 
     /**
@@ -174,14 +159,8 @@ class ShyCommandSignServiceImpl(
         repository.clearCache()
         rightClickCache.clear()
         coolDown.clear()
-        for (world in commandSigns.keys.toTypedArray()) {
-            for (x in commandSigns[world]!!.keys.toTypedArray()) {
-                for (y in commandSigns[world]!![x]!!.keys.toTypedArray()) {
-                    for (sign in commandSigns[world]!![x]!![y]!!.values.toTypedArray()) {
-                        sign.close()
-                    }
-                }
-            }
+        for (sign in commandSigns.values.toTypedArray()) {
+            sign.close()
         }
         commandSigns.clear()
     }

@@ -1,9 +1,14 @@
 package com.github.shynixn.shycommandsigns
 
 import com.github.shynixn.fasterxml.jackson.core.type.TypeReference
+import com.github.shynixn.mccoroutine.folia.CoroutineTimings
+import com.github.shynixn.mccoroutine.folia.launch
 import com.github.shynixn.mcutils.common.ConfigurationService
 import com.github.shynixn.mcutils.common.ConfigurationServiceImpl
+import com.github.shynixn.mcutils.common.CoroutineExecutor
 import com.github.shynixn.mcutils.common.chat.ChatMessageService
+import com.github.shynixn.mcutils.common.command.CommandService
+import com.github.shynixn.mcutils.common.command.CommandServiceImpl
 import com.github.shynixn.mcutils.common.di.DependencyInjectionModule
 import com.github.shynixn.mcutils.common.language.globalChatMessageService
 import com.github.shynixn.mcutils.common.language.globalPlaceHolderService
@@ -84,6 +89,16 @@ class ShyCommandSignsDependencyInjectionModule(
         module.addService<ConfigurationService>(ConfigurationServiceImpl(plugin))
         module.addService<PacketService>(PacketServiceImpl(plugin))
         module.addService<PlaceHolderService>(placeHolderService)
+        module.addService<CommandService>(
+            CommandServiceImpl(
+                object : CoroutineExecutor {
+                    override fun execute(f: suspend () -> Unit) {
+                        plugin.launch(object : CoroutineTimings() {}) {
+                            f.invoke()
+                        }
+                    }
+                })
+        )
         val chatMessageService = ChatMessageServiceImpl(plugin)
         module.addService<ChatMessageService>(chatMessageService)
         plugin.globalChatMessageService = chatMessageService

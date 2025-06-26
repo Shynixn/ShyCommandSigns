@@ -2,6 +2,7 @@ package com.github.shynixn.shycommandsigns.impl
 
 import com.github.shynixn.mccoroutine.folia.globalRegionDispatcher
 import com.github.shynixn.mccoroutine.folia.launch
+import com.github.shynixn.mccoroutine.folia.regionDispatcher
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.command.CommandMeta
 import com.github.shynixn.mcutils.common.placeholder.PlaceHolderService
@@ -10,7 +11,9 @@ import com.github.shynixn.shycommandsigns.ShyCommandSignsPlugin
 import com.github.shynixn.shycommandsigns.contract.ShyCommandSign
 import com.github.shynixn.shycommandsigns.entity.ShyCommandSignLocation
 import com.github.shynixn.shycommandsigns.event.ShyCommandSignsDestroyEvent
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.withContext
 import org.bukkit.Bukkit
 import org.bukkit.block.Sign
@@ -78,31 +81,39 @@ class ShyCommandSignImpl(
             return
         }
 
+        val jobs = ArrayList<Job>()
+
         for (signLocation in locations.toTypedArray()) {
-            if (!isChunkLoadedAtLocation(signLocation.location)) {
-                continue
-            }
-
-            val finalLines = resolveLines(signLocation)
-            val location = signLocation.location.toLocation()
-
             if (isDisposed) {
                 return
             }
 
-            val blockState = location.block.state
+            val location = signLocation.location.toLocation()
+            val job = plugin.launch(plugin.regionDispatcher(location)) {
+                if (!isChunkLoadedAtLocation(signLocation.location)) {
+                    return@launch
+                }
 
-            // Check if block is still a sign.
-            if (blockState !is Sign) {
-                Bukkit.getPluginManager().callEvent(ShyCommandSignsDestroyEvent(signLocation))
-                locations.remove(signLocation)
-                continue
+                val finalLines = resolveLines(signLocation)
+                val blockState = location.block.state
+
+                // Check if block is still a sign.
+                if (blockState !is Sign) {
+                    Bukkit.getPluginManager().callEvent(ShyCommandSignsDestroyEvent(signLocation))
+                    locations.remove(signLocation)
+                    return@launch
+                }
+
+                for (i in finalLines.indices) {
+                    blockState.setLine(i, finalLines[i])
+                }
+                blockState.update(true)
             }
 
-            for (i in finalLines.indices) {
-                blockState.setLine(i, finalLines[i])
-            }
+            jobs.add(job)
         }
+
+        jobs.joinAll()
     }
 
     private suspend fun resolveLines(location: ShyCommandSignLocation): Array<String> {
@@ -110,9 +121,7 @@ class ShyCommandSignImpl(
             val newLines = arrayOf("", "", "", "")
             for (i in newLines.indices) {
                 newLines[i] = placeHolderService.resolvePlaceHolder(
-                    lines[i],
-                    null,
-                    mapOf(ShyCommandSignsPlugin.signLocationKey to location)
+                    lines[i], null, mapOf(ShyCommandSignsPlugin.signLocationKey to location)
                 )
             }
             newLines

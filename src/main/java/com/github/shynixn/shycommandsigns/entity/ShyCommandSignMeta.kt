@@ -4,6 +4,13 @@ import com.github.shynixn.mcutils.common.command.CommandMeta
 import com.github.shynixn.mcutils.common.repository.Comment
 import com.github.shynixn.mcutils.common.repository.Element
 
+@Comment(
+    "###############",
+    "",
+    "This is the configuration for one type of sign.",
+    "",
+    "###############"
+)
 class ShyCommandSignMeta : Element {
     @Comment("Unique identifier of a sign")
     override var name: String = ""
