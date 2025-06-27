@@ -28,7 +28,7 @@ class ShyCommandSignsLanguageImpl : ShyCommandSignsLanguage {
 
  override var shyCommandSignsBooleanNotFoundMessage = LanguageItem("[&9ShyCommandSigns&f]&c Only true and false are allowed as values.")
 
- override var shyCommandSignsRightClickOnSign = LanguageItem("[&9ShyBossBar&f] Click on a sign to convert it into a %1$1s sign.")
+ override var shyCommandSignsRightClickOnSign = LanguageItem("[&9ShyCommandSigns&f] Click on a sign to convert it into a %1$1s sign.")
 
- override var shyCommandSignsRightClickOnSignSuccess = LanguageItem("[&9ShyBossBar&f] Added a sign of type %1$1s sign.")
+ override var shyCommandSignsRightClickOnSignSuccess = LanguageItem("[&9ShyCommandSigns&f] Added a sign of type %1$1s sign.")
 }

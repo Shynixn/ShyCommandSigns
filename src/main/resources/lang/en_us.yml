@@ -45,7 +45,7 @@ shyCommandSignsBooleanNotFoundMessage:
   text: "[&9ShyCommandSigns&f]&c Only true and false are allowed as values."
 shyCommandSignsRightClickOnSign:
   type: "CHAT"
-  text: "[&9ShyBossBar&f] Click on a sign to convert it into a %1$1s sign."
+  text: "[&9ShyCommandSigns&f] Click on a sign to convert it into a %1$1s sign."
 shyCommandSignsRightClickOnSignSuccess:
   type: "CHAT"
-  text: "[&9ShyBossBar&f] Added a sign of type %1$1s sign."
+  text: "[&9ShyCommandSigns&f] Added a sign of type %1$1s sign."

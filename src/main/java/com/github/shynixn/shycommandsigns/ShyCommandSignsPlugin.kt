@@ -24,7 +24,6 @@ class ShyCommandSignsPlugin : JavaPlugin() {
 
     companion object {
         val signLocationKey = "signLocation"
-        val signKey = "[key]"
 
         private val areLegacyVersionsIncluded: Boolean by lazy {
             try {
@@ -42,6 +41,7 @@ class ShyCommandSignsPlugin : JavaPlugin() {
         this.reloadConfig()
         val versions = if (areLegacyVersionsIncluded) {
             listOf(
+                Version.VERSION_1_8_R3,
                 Version.VERSION_1_9_R2,
                 Version.VERSION_1_10_R1,
                 Version.VERSION_1_11_R1,

@@ -1,13 +1,12 @@
 
-# ShyBossBar
+# ShyCommandSigns
 
-ShyBossBar is a BossBar plugin for Bukkit and Folia based Minecraft server.
+ShyCommandSigns is a plugin to make signs execute commands on click for Bukkit and Folia based Minecraft server.
 
 ## Features
 
-* Create multiple bossBars, which can be activated by permissions or commands
+* Create multiple clickable signs, which can execute arbitrary commands
 * Bukkit and Folia compatible
 * PlaceHolderApi support
-* WorldGuard Flag support
 * Runs asynchronously
-* Version support 1.9.R1 - 1.21.R4
+* Version support 1.8.R3 - 1.21.R4

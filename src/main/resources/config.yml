@@ -14,7 +14,7 @@ language: "en_us"
 commands:
   shycommandsigns:
     aliases:
-      - "scsign"
+      - "scsigns"
 
 
 ############################
