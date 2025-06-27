@@ -21,5 +21,5 @@ commands:
 # Global Sign Settings
 ############################
 global:
-  # How often a clicks on signs are registered.
+  # How often clicks on signs are detected.
   clickCooldownTicks: 30
