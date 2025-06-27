@@ -1,8 +1,6 @@
 package com.github.shynixn.shycommandsigns.impl.listener
 
 import com.github.shynixn.mccoroutine.folia.launch
-import com.github.shynixn.mcutils.common.command.CommandService
-import com.github.shynixn.mcutils.common.placeholder.PlaceHolderService
 import com.github.shynixn.mcutils.common.toLocation
 import com.github.shynixn.shycommandsigns.contract.ShyCommandSignService
 import com.github.shynixn.shycommandsigns.event.ShyCommandSignsDestroyEvent
@@ -17,9 +15,7 @@ import org.bukkit.plugin.Plugin
 
 class ShyCommandSignListener(
     private val plugin: Plugin,
-    private val signService: ShyCommandSignService,
-    private val commandService: CommandService,
-    private val placeHolderService: PlaceHolderService
+    private val signService: ShyCommandSignService
 ) : Listener {
     @EventHandler
     fun onSignClickEvent(event: PlayerInteractEvent) {
@@ -51,21 +47,15 @@ class ShyCommandSignListener(
         val sign = signService.getSignByLocation(signLocation) ?: return
 
         if (event.action == Action.LEFT_CLICK_BLOCK) {
-            commandService.executeCommands(
-                listOf(player), sign.leftClickCommands
-            ) { t, p -> placeHolderService.resolvePlaceHolder(t, p) }
+            sign.executeCommand(signLocation, player, sign.leftClickCommands)
         }
 
         if (event.action == Action.RIGHT_CLICK_BLOCK) {
-            commandService.executeCommands(
-                listOf(player), sign.rightClickCommands
-            ) { t, p -> placeHolderService.resolvePlaceHolder(t, p) }
+            sign.executeCommand(signLocation, player, sign.rightClickCommands)
         }
 
         if (event.action == Action.LEFT_CLICK_BLOCK || event.action == Action.RIGHT_CLICK_BLOCK) {
-            commandService.executeCommands(
-                listOf(player), sign.clickCommands
-            ) { t, p -> placeHolderService.resolvePlaceHolder(t, p) }
+            sign.executeCommand(signLocation, player, sign.clickCommands)
         }
     }
 

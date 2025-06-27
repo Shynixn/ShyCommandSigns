@@ -1,6 +1,7 @@
 package com.github.shynixn.shycommandsigns.impl.service
 
 import com.github.shynixn.mccoroutine.folia.ticks
+import com.github.shynixn.mcutils.common.command.CommandService
 import com.github.shynixn.mcutils.common.placeholder.PlaceHolderService
 import com.github.shynixn.shycommandsigns.contract.ShyCommandSign
 import com.github.shynixn.shycommandsigns.contract.ShyCommandSignFactory
@@ -9,7 +10,8 @@ import com.github.shynixn.shycommandsigns.impl.ShyCommandSignImpl
 import org.bukkit.plugin.Plugin
 
 class ShyCommandSignFactoryImpl(
-    private val plugin: Plugin, private val placeHolderService: PlaceHolderService
+    private val plugin: Plugin, private val placeHolderService: PlaceHolderService,
+    private val commandService: CommandService
 ) : ShyCommandSignFactory {
     /**
      * Creates a new command sign from the given metadata.
@@ -38,6 +40,7 @@ class ShyCommandSignFactoryImpl(
             ArrayList(meta.leftClickCommands),
             ArrayList(meta.rightClickCommands),
             ArrayList(meta.locations),
+            commandService,
             plugin
         )
         return commandSign

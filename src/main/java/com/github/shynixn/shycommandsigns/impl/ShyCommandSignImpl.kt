@@ -5,6 +5,7 @@ import com.github.shynixn.mccoroutine.folia.launch
 import com.github.shynixn.mccoroutine.folia.regionDispatcher
 import com.github.shynixn.mcutils.common.Vector3d
 import com.github.shynixn.mcutils.common.command.CommandMeta
+import com.github.shynixn.mcutils.common.command.CommandService
 import com.github.shynixn.mcutils.common.placeholder.PlaceHolderService
 import com.github.shynixn.mcutils.common.toLocation
 import com.github.shynixn.shycommandsigns.ShyCommandSignsPlugin
@@ -16,7 +17,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.withContext
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.block.Sign
+import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
 
 
@@ -40,6 +43,9 @@ class ShyCommandSignImpl(
     override var leftClickCommands: List<CommandMeta>,
     override var rightClickCommands: List<CommandMeta>,
     override var locations: MutableList<ShyCommandSignLocation>,
+
+
+    private val commandService: CommandService,
     /**
      * Plugin
      */
@@ -49,6 +55,7 @@ class ShyCommandSignImpl(
      * Is this sign disposed.
      */
     override var isDisposed: Boolean = false
+
 
     init {
         plugin.launch {
@@ -75,6 +82,28 @@ class ShyCommandSignImpl(
     override fun close() {
         isDisposed = true
     }
+
+    override fun executeCommand(location: Location, player: Player, commands: List<CommandMeta>) {
+        val signLocation = locations.firstOrNull{ e ->
+            e.location.world == location.world!!.name
+                    && e.location.x == location.x && e.location.y == location.y && e.location.z == location.z
+        }
+
+        if (signLocation == null) {
+            return
+        }
+
+        commandService.executeCommands(
+            listOf(player), commands
+        ) { t, p ->
+            var newText = t
+            for (tag in signLocation.tags) {
+                newText = newText.replace("\$${tag.key}\$", tag.value)
+            }
+            placeHolderService.resolvePlaceHolder(newText, p)
+        }
+    }
+
 
     private suspend fun updateAsync() {
         if (isDisposed) {
@@ -120,8 +149,12 @@ class ShyCommandSignImpl(
         return withContext(plugin.globalRegionDispatcher) {
             val newLines = arrayOf("", "", "", "")
             for (i in newLines.indices) {
+                var line = lines[i]
+                for (tag in location.tags) {
+                    line = line.replace("\$${tag.key}\$", tag.value)
+                }
                 newLines[i] = placeHolderService.resolvePlaceHolder(
-                    lines[i], null, mapOf(ShyCommandSignsPlugin.signLocationKey to location)
+                    line, null, mapOf(ShyCommandSignsPlugin.signLocationKey to location)
                 )
             }
             newLines

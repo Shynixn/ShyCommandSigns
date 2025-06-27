@@ -2,6 +2,8 @@ package com.github.shynixn.shycommandsigns.contract
 
 import com.github.shynixn.mcutils.common.command.CommandMeta
 import com.github.shynixn.shycommandsigns.entity.ShyCommandSignLocation
+import org.bukkit.Location
+import org.bukkit.entity.Player
 
 interface ShyCommandSign {
     /**
@@ -26,6 +28,8 @@ interface ShyCommandSign {
      * Is this sign disposed.
      */
     val isDisposed: Boolean
+
+    fun executeCommand(location : Location, player : Player, commands: List<CommandMeta>)
 
     /**
      * Performs an immediate update to all placed signs of this command sign.

@@ -71,17 +71,14 @@ class ShyCommandSignsDependencyInjectionModule(
             )
         }
         module.addService<ShyCommandSignListener> {
-            ShyCommandSignListener(module.getService(), module.getService(), module.getService(), module.getService())
+            ShyCommandSignListener(module.getService(), module.getService())
         }
         module.addService<ShyCommandSignFactory> {
-            ShyCommandSignFactoryImpl(module.getService(), module.getService())
+            ShyCommandSignFactoryImpl(module.getService(), module.getService(), module.getService())
         }
         module.addService<ShyCommandSignService> {
             ShyCommandSignServiceImpl(
-                module.getService(),
-                module.getService(),
-                module.getService(),
-                module.getService()
+                module.getService(), module.getService(), module.getService(), module.getService()
             )
         }
 
@@ -90,14 +87,13 @@ class ShyCommandSignsDependencyInjectionModule(
         module.addService<PacketService>(PacketServiceImpl(plugin))
         module.addService<PlaceHolderService>(placeHolderService)
         module.addService<CommandService>(
-            CommandServiceImpl(
-                object : CoroutineExecutor {
-                    override fun execute(f: suspend () -> Unit) {
-                        plugin.launch(object : CoroutineTimings() {}) {
-                            f.invoke()
-                        }
+            CommandServiceImpl(object : CoroutineExecutor {
+                override fun execute(f: suspend () -> Unit) {
+                    plugin.launch(object : CoroutineTimings() {}) {
+                        f.invoke()
                     }
-                })
+                }
+            })
         )
         val chatMessageService = ChatMessageServiceImpl(plugin)
         module.addService<ChatMessageService>(chatMessageService)

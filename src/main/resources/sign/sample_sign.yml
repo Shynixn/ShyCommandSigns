@@ -5,7 +5,7 @@ lines:
   - "&e&lSample Sign"
   - "#EE82EE HTML color"
   - "%placeholder%"
-  - "%tag_blockball%"
+  - ""
 # How often this sign is updated in ticks. e.g. resolving placeholder values.
 refreshTicks: 60
 # A list of commands, which get executed on right or left click. A command always starts with a slash. Possible values for type SERVER, SERVER_PER_PLAYER, PER_PLAYER.
