@@ -613,7 +613,7 @@
 the lines of a sign (including PlaceHolderApi compatible placeholders) and commands
 which are executed on click.</p>
 <p>After you have configured a <code>sign file</code>, you can use the <code>/shycommandsigns add &lt;yourSignFileName&gt;</code> to request placing the sign.
-The next step is to perform a right-click on an existing sign block to apply your <code>sign file</code>. You can add multiple placed signs to a single <code>sigm file</code>.</p>
+The next step is to perform a right-click on an existing sign block to apply your <code>sign file</code>. You can add multiple placed signs to a single <code>sign file</code>.</p>
 <p>A detailed description can be found below.</p>
 <h2 id="creating-a-basic-sign">Creating a basic sign</h2>
 <h3 id="managing-files">Managing files</h3>
@@ -672,13 +672,13 @@ The next step is to perform a right-click on an existing sign block to apply you
 <div class="highlight"><pre><span></span><code><span class="nt">lines</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;BlockBall&#39;</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;&amp;aJoin&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;%blockball_game_players_$game$%/%blockball_game_maxPlayers_$game$%&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;%blockball_game_players_$arena$%/%blockball_game_maxPlayers_$arena$%&#39;</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;&#39;</span>
 <span class="nt">clickCommands</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 <span class="nt">leftClickCommands</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 <span class="nt">rightClickCommands</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PER_PLAYER</span>
-<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/blockball</span><span class="nv"> </span><span class="s">join</span><span class="nv"> </span><span class="s">$game$&quot;</span>
+<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/blockball</span><span class="nv"> </span><span class="s">join</span><span class="nv"> </span><span class="s">$arena$&quot;</span>
 <span class="w">  </span><span class="nt">cooldown</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
 <span class="w">  </span><span class="nt">delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
 </code></pre></div>
