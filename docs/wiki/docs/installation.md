@@ -72,13 +72,13 @@ rightClickCommands:
 lines:
 - 'BlockBall'
 - '&aJoin'
-- '%blockball_game_players_$game$%/%blockball_game_maxPlayers_$game$%'
+- '%blockball_game_players_$arena$%/%blockball_game_maxPlayers_$arena$%'
 - ''
 clickCommands: []
 leftClickCommands: []
 rightClickCommands:
 - type: PER_PLAYER
-  command: "/blockball join $game$"
+  command: "/blockball join $arena$"
   cooldown: 0
   delay: 0
 ```
