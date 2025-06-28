@@ -352,6 +352,19 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    How to create a sign
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -363,6 +376,91 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-basic-sign" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a basic sign
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating a basic sign">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#managing-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Managing files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingame" class="md-nav__link">
+    <span class="md-ellipsis">
+      InGame
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-an-advanced-sign" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating an advanced sign
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating an advanced sign">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#managing-files_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Managing files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingame_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      InGame
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -419,6 +517,80 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-basic-sign" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a basic sign
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating a basic sign">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#managing-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Managing files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingame" class="md-nav__link">
+    <span class="md-ellipsis">
+      InGame
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-an-advanced-sign" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating an advanced sign
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating an advanced sign">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#managing-files_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Managing files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingame_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      InGame
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -437,6 +609,87 @@
 
 
 <h1 id="how-to-create-a-new-sign">How to create a new sign</h1>
+<p>In ShyCommandSigns you have to configure a <code>sign file</code> first, where you configure
+the lines of a sign (including PlaceHolderApi compatible placeholders) and commands
+which are executed on click.</p>
+<p>After you have configured a <code>sign file</code>, you can use the <code>/shycommandsigns add &lt;yourSignFileName&gt;</code> to request placing the sign.
+The next step is to perform a right-click on an existing sign block to apply your <code>sign file</code>. You can add multiple placed signs to a single <code>sigm file</code>.</p>
+<p>A detailed description can be found below.</p>
+<h2 id="creating-a-basic-sign">Creating a basic sign</h2>
+<h3 id="managing-files">Managing files</h3>
+<ol>
+<li>Open the <code>/plugins/ShyCommandSigns/sign</code> folder.</li>
+<li>Copy the <code>sample_sign.yml</code> to a new file in the same folder and name it <code>my_sign.yml</code>.</li>
+<li>Open <code>my_sign.yml</code> and set the <code>name</code> to <code>my_sign</code></li>
+<li>Set the <code>lines</code> to text, chat colors (including HTML color) or PlaceHolderApi compatible placeholders.</li>
+<li>Set the commands, which should get executed on click. If you do not want commands to be executed on a certain type of click just set it to <code>[]</code>. e.g. <code>leftClickCommands: []</code></li>
+<li>Define how often this sign is refreshed. It is only refreshed, if the chunk, where the sign is placed, is currently loaded on your server.</li>
+<li>Save the file.</li>
+</ol>
+<h3 id="ingame">InGame</h3>
+<ol>
+<li>Execute the <code>/shycommandsigns reload</code> command</li>
+<li>Execute the <code>/shycommandsigns add my_sign</code> command</li>
+<li>Place a sign block anywhere</li>
+<li>Right-click on this sign block. The sign will be added to the list of locations in your <code>sign file</code>.</li>
+<li>Repeat step 2-4 until you have placed all signs of the <code>sign file</code> on your server.</li>
+<li>You can destroy a sign by simply destroying the sign block.</li>
+</ol>
+<h2 id="creating-an-advanced-sign">Creating an advanced sign</h2>
+<p>ShyCommandSigns can be used to create MiniGame signs for all kinds of MiniGame plugins. They only have to provide a <code>join</code> command and optionally PlaceHolderApi placeholders.</p>
+<p>Assume the following situation:</p>
+<ul>
+<li>You have got multiple arenas of a MiniGame plugin</li>
+<li>You want to design a join sign for all of those arenas </li>
+<li>You do not want to create a new <code>sign file</code> per arena because they should all look the same</li>
+</ul>
+<p>Here, the sign tagging feature of ShyCommandSigns can be used. </p>
+<h3 id="managing-files_1">Managing files</h3>
+<ul>
+<li>Open the <code>/plugins/ShyCommandSigns/sign</code> folder.</li>
+<li>Copy the <code>sample_sign.yml</code> to a new file in the same folder and name it <code>blockball_join_sign.yml</code>.</li>
+<li>Open <code>blockball_join_sign.yml</code> and set the <code>name</code> to <code>blockball_join_sign</code></li>
+<li>Set the text of the <code>lines</code> and <code>clickCommands</code>.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">lines</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;BlockBall&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;&amp;aJoin&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;%blockball_game_players_game1%/%blockball_game_maxPlayers_game1%&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="nt">clickCommands</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="nt">leftClickCommands</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="nt">rightClickCommands</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PER_PLAYER</span>
+<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/blockball</span><span class="nv"> </span><span class="s">join</span><span class="nv"> </span><span class="s">game1&quot;</span>
+<span class="w">  </span><span class="nt">cooldown</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">  </span><span class="nt">delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</code></pre></div>
+<ul>
+<li>You can see that those lines and commands directly reference the arena <code>game1</code> of BlockBall. </li>
+<li>However, we can change it that the lines and commands reference a tag <code>$arena$</code> instead of <code>game1</code>. This allows to use the same <code>sign file</code> for multiple arenas.</li>
+<li>A tag always starts with <code>$</code> and ends with <code>$</code>.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">lines</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;BlockBall&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;&amp;aJoin&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;%blockball_game_players_$game$%/%blockball_game_maxPlayers_$game$%&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="nt">clickCommands</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="nt">leftClickCommands</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="nt">rightClickCommands</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PER_PLAYER</span>
+<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/blockball</span><span class="nv"> </span><span class="s">join</span><span class="nv"> </span><span class="s">$game$&quot;</span>
+<span class="w">  </span><span class="nt">cooldown</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">  </span><span class="nt">delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</code></pre></div>
+<h3 id="ingame_1">InGame</h3>
+<ul>
+<li>Execute the <code>/shycommandsigns reload</code> command</li>
+<li>Execute the <code>/shycommandsigns add blockball_join arena game1</code> command. This creates a join sign for arena named <code>game1</code>.</li>
+<li>Place a sign block anywhere and right-click on this sign block. The sign will be added to the list of locations in your <code>sign file</code>.</li>
+<li>Execute the <code>/shycommandsigns add blockball_join arena coolArena</code> command. This creates a join sign for arena named <code>coolArena</code>.</li>
+<li>Place a sign block anywhere and right-click on this sign block. The sign will be added to the list of locations in your <code>sign file</code>.</li>
+</ul>
 
 
 
