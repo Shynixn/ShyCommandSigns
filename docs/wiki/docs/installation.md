@@ -5,7 +5,7 @@ the lines of a sign (including PlaceHolderApi compatible placeholders) and comma
 which are executed on click.
 
 After you have configured a ``sign file``, you can use the ``/shycommandsigns add <yourSignFileName>`` to request placing the sign.
-The next step is to perform a right-click on an existing sign block to apply your ``sign file``. You can add multiple placed signs to a single ``sigm file``.
+The next step is to perform a right-click on an existing sign block to apply your ``sign file``. You can add multiple placed signs to a single ``sign file``.
 
 A detailed description can be found below.
 
