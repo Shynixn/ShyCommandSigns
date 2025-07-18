@@ -1,5 +1,5 @@
 name: ShyCommandSigns
-version: 1.0.0
+version: 1.1.0
 author: Shynixn
 main: com.github.shynixn.shycommandsigns.ShyCommandSignsPlugin
 softdepend: [ PlaceholderAPI]

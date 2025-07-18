@@ -1,17 +1,13 @@
 package com.github.shynixn.shycommandsigns
 
 import com.github.shynixn.fasterxml.jackson.core.type.TypeReference
-import com.github.shynixn.mccoroutine.folia.CoroutineTimings
-import com.github.shynixn.mccoroutine.folia.launch
 import com.github.shynixn.mcutils.common.ConfigurationService
 import com.github.shynixn.mcutils.common.ConfigurationServiceImpl
-import com.github.shynixn.mcutils.common.CoroutineExecutor
+import com.github.shynixn.mcutils.common.CoroutinePlugin
 import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.command.CommandService
 import com.github.shynixn.mcutils.common.command.CommandServiceImpl
 import com.github.shynixn.mcutils.common.di.DependencyInjectionModule
-import com.github.shynixn.mcutils.common.language.globalChatMessageService
-import com.github.shynixn.mcutils.common.language.globalPlaceHolderService
 import com.github.shynixn.mcutils.common.placeholder.PlaceHolderService
 import com.github.shynixn.mcutils.common.repository.CacheRepository
 import com.github.shynixn.mcutils.common.repository.CachedRepositoryImpl
@@ -44,8 +40,10 @@ class ShyCommandSignsDependencyInjectionModule(
 
         // Params
         module.addService<Plugin>(plugin)
+        module.addService<CoroutinePlugin>(plugin)
         module.addService<ShyCommandSignsLanguage>(language)
         module.addService<ShyCommandSignSettings>(settings)
+        module.addService<PlaceHolderService>(placeHolderService)
 
         // Repositories
         val templateRepositoryImpl = YamlFileRepositoryImpl<ShyCommandSignMeta>(
@@ -78,27 +76,26 @@ class ShyCommandSignsDependencyInjectionModule(
         }
         module.addService<ShyCommandSignService> {
             ShyCommandSignServiceImpl(
-                module.getService(), module.getService(), module.getService(), module.getService()
+                module.getService(),
+                module.getService(),
+                module.getService(),
+                module.getService(),
+                module.getService(),
+                module.getService()
             )
         }
-
-        // Library Services
-        module.addService<ConfigurationService>(ConfigurationServiceImpl(plugin))
-        module.addService<PacketService>(PacketServiceImpl(plugin))
-        module.addService<PlaceHolderService>(placeHolderService)
-        module.addService<CommandService>(
-            CommandServiceImpl(object : CoroutineExecutor {
-                override fun execute(f: suspend () -> Unit) {
-                    plugin.launch(object : CoroutineTimings() {}) {
-                        f.invoke()
-                    }
-                }
-            })
-        )
-        val chatMessageService = ChatMessageServiceImpl(plugin)
-        module.addService<ChatMessageService>(chatMessageService)
-        plugin.globalChatMessageService = chatMessageService
-        plugin.globalPlaceHolderService = placeHolderService
+        module.addService<ConfigurationService> {
+            ConfigurationServiceImpl(module.getService())
+        }
+        module.addService<PacketService> {
+            PacketServiceImpl(module.getService())
+        }
+        module.addService<CommandService> {
+            CommandServiceImpl(module.getService())
+        }
+        module.addService<ChatMessageService> {
+            ChatMessageServiceImpl(module.getService(), module.getService())
+        }
 
         // Developer Api.
         Bukkit.getServicesManager().register(
