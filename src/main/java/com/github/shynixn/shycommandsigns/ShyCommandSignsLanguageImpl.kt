@@ -6,7 +6,7 @@ import com.github.shynixn.shycommandsigns.contract.ShyCommandSignsLanguage
 class ShyCommandSignsLanguageImpl : ShyCommandSignsLanguage {
  override val names: List<String>
   get() = listOf("en_us")
- override var shyCommandSignsPlayerNotFoundMessage = LanguageItem("[&9ShyCommandSigns&f] &cPlayer %1$1s not found.")
+ override var shyCommandSignsPlayerNotFoundMessage = LanguageItem("[&9ShyCommandSigns&f] &cPlayer %shycommandsigns_param_1% not found.")
 
  override var shyCommandSignsNoPermissionCommand = LanguageItem("[&9ShyCommandSigns&f] &cYou do not have permission to execute this command.")
 
@@ -24,11 +24,11 @@ class ShyCommandSignsLanguageImpl : ShyCommandSignsLanguage {
 
  override var shyCommandSignsAddCommandHint = LanguageItem("Adds a sign of the given sign type.")
 
- override var shyCommandSignsNotFoundMessage = LanguageItem("[&9ShyCommandSigns&f] &cSign %1$1s not found.")
+ override var shyCommandSignsNotFoundMessage = LanguageItem("[&9ShyCommandSigns&f] &cSign %shycommandsigns_param_1% not found.")
 
  override var shyCommandSignsBooleanNotFoundMessage = LanguageItem("[&9ShyCommandSigns&f]&c Only true and false are allowed as values.")
 
- override var shyCommandSignsRightClickOnSign = LanguageItem("[&9ShyCommandSigns&f] Click on a sign to convert it into a %1$1s sign.")
+ override var shyCommandSignsRightClickOnSign = LanguageItem("[&9ShyCommandSigns&f] Click on a sign to convert it into a %shycommandsigns_param_1% sign.")
 
- override var shyCommandSignsRightClickOnSignSuccess = LanguageItem("[&9ShyCommandSigns&f] Added a sign of type %1$1s sign.")
+ override var shyCommandSignsRightClickOnSignSuccess = LanguageItem("[&9ShyCommandSigns&f] Added a sign of type %shycommandsigns_param_1% sign.")
 }

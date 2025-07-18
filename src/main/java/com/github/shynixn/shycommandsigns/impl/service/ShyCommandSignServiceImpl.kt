@@ -1,6 +1,8 @@
 package com.github.shynixn.shycommandsigns.impl.service
 
-import com.github.shynixn.mcutils.common.language.sendPluginMessage
+import com.github.shynixn.mccoroutine.folia.globalRegionDispatcher
+import com.github.shynixn.mccoroutine.folia.launch
+import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.repository.CacheRepository
 import com.github.shynixn.mcutils.common.toVector3d
 import com.github.shynixn.shycommandsigns.contract.ShyCommandSign
@@ -13,13 +15,16 @@ import com.github.shynixn.shycommandsigns.entity.ShyCommandSignSettings
 import com.github.shynixn.shycommandsigns.entity.ShyCommandSignTag
 import org.bukkit.Location
 import org.bukkit.entity.Player
+import org.bukkit.plugin.Plugin
 import java.util.*
 
 class ShyCommandSignServiceImpl(
     private val repository: CacheRepository<ShyCommandSignMeta>,
     private val signFactory: ShyCommandSignFactory,
     private val language: ShyCommandSignsLanguage,
-    private val settings: ShyCommandSignSettings
+    private val settings: ShyCommandSignSettings,
+    private val chatMessageService: ChatMessageService,
+    private val plugin: Plugin
 ) : ShyCommandSignService {
     private val commandSigns = HashMap<String, ShyCommandSign>()
     private val rightClickCache = HashMap<Player, Pair<String, Pair<String, String>>>()
@@ -128,7 +133,14 @@ class ShyCommandSignServiceImpl(
         })
         repository.save(selectedSignMeta)
         reload()
-        player.sendPluginMessage(language.shyCommandSignsRightClickOnSignSuccess, signRequest.first)
+
+        plugin.launch(plugin.globalRegionDispatcher) {
+            chatMessageService.sendLanguageMessage(
+                player,
+                language.shyCommandSignsRightClickOnSignSuccess,
+                signRequest.first
+            )
+        }
     }
 
     /**

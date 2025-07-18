@@ -2,12 +2,12 @@ package com.github.shynixn.shycommandsigns.impl.commandexecutor
 
 import com.github.shynixn.mccoroutine.folia.globalRegionDispatcher
 import com.github.shynixn.mccoroutine.folia.launch
-import com.github.shynixn.mcutils.common.CoroutineExecutor
+import com.github.shynixn.mcutils.common.CoroutinePlugin
 import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.command.CommandBuilder
 import com.github.shynixn.mcutils.common.command.Validator
+import com.github.shynixn.mcutils.common.language.LanguageItem
 import com.github.shynixn.mcutils.common.language.reloadTranslation
-import com.github.shynixn.mcutils.common.language.sendPluginMessage
 import com.github.shynixn.mcutils.common.repository.CacheRepository
 import com.github.shynixn.shycommandsigns.contract.ShyCommandSignService
 import com.github.shynixn.shycommandsigns.contract.ShyCommandSignsLanguage
@@ -15,25 +15,15 @@ import com.github.shynixn.shycommandsigns.entity.ShyCommandSignMeta
 import com.github.shynixn.shycommandsigns.entity.ShyCommandSignSettings
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import org.bukkit.plugin.Plugin
 
 class ShyCommandSignCommandExecutor(
     private val settings: ShyCommandSignSettings,
-    private val plugin: Plugin,
+    private val plugin: CoroutinePlugin,
     private val signService: ShyCommandSignService,
     private val language: ShyCommandSignsLanguage,
-    chatMessageService: ChatMessageService,
+    private val chatMessageService: ChatMessageService,
     private val repository: CacheRepository<ShyCommandSignMeta>,
 ) {
-
-    private val coroutineExecutor = object : CoroutineExecutor {
-        override fun execute(f: suspend () -> Unit) {
-            plugin.launch(plugin.globalRegionDispatcher) {
-                f.invoke()
-            }
-        }
-    }
-
     private val senderHasToBePlayer: () -> String = {
         language.shyCommandSignsCommandSenderHasToBePlayer.text
     }
@@ -55,7 +45,7 @@ class ShyCommandSignCommandExecutor(
     }
 
     init {
-        CommandBuilder(plugin, coroutineExecutor, settings.baseCommand, chatMessageService) {
+        CommandBuilder(plugin, settings.baseCommand, chatMessageService) {
             usage(language.shyCommandSignsCommandUsage.text)
             description(language.shyCommandSignsCommandDescription.text)
             aliases(settings.commandAliases)
@@ -87,7 +77,7 @@ class ShyCommandSignCommandExecutor(
                     plugin.reloadConfig()
                     plugin.reloadTranslation(language)
                     signService.reload()
-                    sender.sendPluginMessage(language.shyCommandSignsReloadMessage)
+                    sender.sendLanguageMessage(language.shyCommandSignsReloadMessage)
                 }
             }.helpCommand()
         }.build()
@@ -100,6 +90,13 @@ class ShyCommandSignCommandExecutor(
         tagValue: String = ""
     ) {
         signService.addSignRequest(sender, signMeta.name, Pair(tagKey, tagValue))
-        sender.sendPluginMessage(language.shyCommandSignsRightClickOnSign, signMeta.name)
+        sender.sendLanguageMessage(language.shyCommandSignsRightClickOnSign, signMeta.name)
+    }
+
+    private fun CommandSender.sendLanguageMessage(languageItem: LanguageItem, vararg args: String) {
+        val sender = this
+        plugin.launch(plugin.globalRegionDispatcher) {
+            chatMessageService.sendLanguageMessage(sender, languageItem, *args)
+        }
     }
 }

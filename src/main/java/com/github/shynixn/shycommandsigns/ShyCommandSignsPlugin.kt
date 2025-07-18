@@ -1,24 +1,28 @@
 package com.github.shynixn.shycommandsigns
 
-import com.github.shynixn.mccoroutine.folia.launch
-import com.github.shynixn.mccoroutine.folia.mcCoroutineConfiguration
+import com.github.shynixn.mccoroutine.folia.*
 import com.github.shynixn.mcutils.common.ChatColor
+import com.github.shynixn.mcutils.common.CoroutinePlugin
 import com.github.shynixn.mcutils.common.Version
 import com.github.shynixn.mcutils.common.checkIfFoliaIsLoadable
 import com.github.shynixn.mcutils.common.di.DependencyInjectionModule
 import com.github.shynixn.mcutils.common.language.reloadTranslation
 import com.github.shynixn.mcutils.common.placeholder.PlaceHolderService
 import com.github.shynixn.mcutils.common.placeholder.PlaceHolderServiceImpl
-import com.github.shynixn.shycommandsigns.impl.commandexecutor.ShyCommandSignCommandExecutor
 import com.github.shynixn.shycommandsigns.contract.ShyCommandSignService
 import com.github.shynixn.shycommandsigns.entity.ShyCommandSignSettings
 import com.github.shynixn.shycommandsigns.enumeration.PlaceHolder
+import com.github.shynixn.shycommandsigns.impl.commandexecutor.ShyCommandSignCommandExecutor
 import com.github.shynixn.shycommandsigns.impl.listener.ShyCommandSignListener
+import kotlinx.coroutines.Job
 import org.bukkit.Bukkit
+import org.bukkit.Location
+import org.bukkit.entity.Entity
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Level
+import kotlin.coroutines.CoroutineContext
 
-class ShyCommandSignsPlugin : JavaPlugin() {
+class ShyCommandSignsPlugin : JavaPlugin(), CoroutinePlugin {
     private val prefix: String = ChatColor.BLUE.toString() + "[ShyCommandSigns] " + ChatColor.WHITE
     private var module: DependencyInjectionModule? = null
 
@@ -131,6 +135,24 @@ class ShyCommandSignsPlugin : JavaPlugin() {
             signService.reload()
             Bukkit.getServer().consoleSender.sendMessage(prefix + ChatColor.GREEN + "Enabled ShyCommandSign " + plugin.description.version + " by Shynixn")
         }
+    }
+
+    override fun execute(f: suspend () -> Unit): Job {
+        return launch {
+            f.invoke()
+        }
+    }
+
+    override fun fetchEntityDispatcher(entity: Entity): CoroutineContext {
+        return entityDispatcher(entity)
+    }
+
+    override fun fetchGlobalRegionDispatcher(): CoroutineContext {
+        return globalRegionDispatcher
+    }
+
+    override fun fetchLocationDispatcher(location: Location): CoroutineContext {
+        return regionDispatcher(location)
     }
 
     override fun onDisable() {
