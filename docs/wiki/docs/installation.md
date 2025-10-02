@@ -1,13 +1,26 @@
-# How to create a new sign
+# Installation & Setup Guide
 
-In ShyCommandSigns you have to configure a ``sign file`` first, where you configure
-the lines of a sign (including PlaceHolderApi compatible placeholders) and commands
-which are executed on click.
+## Quick Start Guide
 
-After you have configured a ``sign file``, you can use the ``/shycommandsigns add <yourSignFileName>`` to request placing the sign.
-The next step is to perform a right-click on an existing sign block to apply your ``sign file``. You can add multiple placed signs to a single ``sign file``.
+1. Download the ShyCommandSigns plugin
+2. Place it in your server's `plugins` folder
+3. Restart your server
+4. The plugin will create default configuration files
 
-A detailed description can be found below.
+## Creating Interactive Signs
+
+Before placing signs in your world, you'll need to set up a configuration file that defines how your signs will work. Here's how:
+
+1. Configure a `sign file` that defines:
+   * The text that appears on the sign
+   * PlaceholderAPI placeholders (if needed)
+   * Commands to execute when clicked
+
+2. Use the command `/shycommandsigns add <yourSignFileName>` to start placing a sign
+3. Right-click on any sign block to activate it
+4. You can link multiple signs to the same configuration file
+
+💡 **Tip**: You can remove a configured sign at any time by simply breaking it.
 
 ## Creating a basic sign
 
