@@ -49,3 +49,9 @@ shyCommandSignsRightClickOnSign:
 shyCommandSignsRightClickOnSignSuccess:
   type: "CHAT"
   text: "[&9ShyCommandSigns&f] Added a sign of type %shycommandsigns_param_1% sign."
+shyCommandSignsServerCommandHint:
+  type: "CHAT"
+  text: "Sends the player to the given server."
+shyCommandSignsServerMessage:
+  type: "CHAT"
+  text: "[&9ShyCommandSigns&f] Connecting to server '%shycommandsigns_param_1%' ..."

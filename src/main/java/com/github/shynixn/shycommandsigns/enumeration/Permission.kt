@@ -4,4 +4,6 @@ enum class Permission(val text: String) {
     COMMAND("shycommandsigns.command"),
     RELOAD("shycommandsigns.reload"),
     ADD("shycommandsigns.add"),
+    SERVER("shycommandsigns.server"),
+    OTHER_PLAYER("shycommandsigns.manipulateother"),
 }

@@ -31,4 +31,8 @@ class ShyCommandSignsLanguageImpl : ShyCommandSignsLanguage {
  override var shyCommandSignsRightClickOnSign = LanguageItem("[&9ShyCommandSigns&f] Click on a sign to convert it into a %shycommandsigns_param_1% sign.")
 
  override var shyCommandSignsRightClickOnSignSuccess = LanguageItem("[&9ShyCommandSigns&f] Added a sign of type %shycommandsigns_param_1% sign.")
+
+ override var shyCommandSignsServerCommandHint = LanguageItem("Sends the player to the given server.")
+
+ override var shyCommandSignsServerMessage = LanguageItem("[&9ShyCommandSigns&f] Connecting to server '%shycommandsigns_param_1%' ...")
 }

@@ -65,6 +65,7 @@ class ShyCommandSignsDependencyInjectionModule(
                 module.getService(),
                 module.getService(),
                 module.getService(),
+                module.getService(),
                 module.getService()
             )
         }

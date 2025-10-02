@@ -8,13 +8,17 @@ import com.github.shynixn.mcutils.common.command.CommandBuilder
 import com.github.shynixn.mcutils.common.command.Validator
 import com.github.shynixn.mcutils.common.language.LanguageItem
 import com.github.shynixn.mcutils.common.language.reloadTranslation
+import com.github.shynixn.mcutils.common.placeholder.PlaceHolderService
 import com.github.shynixn.mcutils.common.repository.CacheRepository
 import com.github.shynixn.shycommandsigns.contract.ShyCommandSignService
 import com.github.shynixn.shycommandsigns.contract.ShyCommandSignsLanguage
 import com.github.shynixn.shycommandsigns.entity.ShyCommandSignMeta
 import com.github.shynixn.shycommandsigns.entity.ShyCommandSignSettings
+import com.google.common.io.ByteStreams
+import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import java.util.UUID
 
 class ShyCommandSignCommandExecutor(
     private val settings: ShyCommandSignSettings,
@@ -23,6 +27,7 @@ class ShyCommandSignCommandExecutor(
     private val language: ShyCommandSignsLanguage,
     private val chatMessageService: ChatMessageService,
     private val repository: CacheRepository<ShyCommandSignMeta>,
+    private val placeHolderService: PlaceHolderService
 ) {
     private val senderHasToBePlayer: () -> String = {
         language.shyCommandSignsCommandSenderHasToBePlayer.text
@@ -41,6 +46,36 @@ class ShyCommandSignCommandExecutor(
 
         override suspend fun message(sender: CommandSender, prevArgs: List<Any>, openArgs: List<String>): String {
             return language.shyCommandSignsNotFoundMessage.text.format(openArgs[0])
+        }
+    }
+
+    private val onlinePlayerTabs: ((CommandSender) -> List<String>) = {
+        Bukkit.getOnlinePlayers().map { e -> e.name }
+    }
+
+    private val playerMustExist = object : Validator<Player> {
+        override suspend fun transform(
+            sender: CommandSender, prevArgs: List<Any>, openArgs: List<String>
+        ): Player? {
+            try {
+                val playerId = openArgs[0]
+                val player = Bukkit.getPlayer(playerId)
+
+                if (player != null) {
+                    return player
+                }
+                return Bukkit.getPlayer(UUID.fromString(playerId))
+            } catch (e: Exception) {
+                return null
+            }
+        }
+
+        override suspend fun message(sender: CommandSender, prevArgs: List<Any>, openArgs: List<String>): String {
+            return placeHolderService.resolvePlaceHolder(
+                language.shyCommandSignsPlayerNotFoundMessage.text,
+                null,
+                mapOf("0" to openArgs[0])
+            )
         }
     }
 
@@ -67,6 +102,18 @@ class ShyCommandSignCommandExecutor(
                         }
                     }
             }
+            subCommand("server") {
+                permission(settings.serverPermission)
+                toolTip {
+                    language.shyCommandSignsServerCommandHint.text
+                }
+                builder().argument("server").executePlayer(senderHasToBePlayer) { player, server ->
+                    sendPlayerToServer(player, player, server)
+                }.argument("player").validator(playerMustExist).tabs(onlinePlayerTabs)
+                    .permission { settings.otherPlayerPermission }.execute { sender,  server, player ->
+                        sendPlayerToServer(sender, player, server)
+                    }
+            }
             subCommand("reload") {
                 permission(settings.reloadPermission)
                 toolTip {
@@ -81,6 +128,14 @@ class ShyCommandSignCommandExecutor(
                 }
             }.helpCommand()
         }.build()
+    }
+
+    private fun sendPlayerToServer(sender: CommandSender, player: Player, server: String) {
+        val out = ByteStreams.newDataOutput()
+        out.writeUTF("Connect")
+        out.writeUTF(server)
+        player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray())
+        sender.sendLanguageMessage(language.shyCommandSignsServerMessage, server)
     }
 
     private fun addSign(

@@ -72,9 +72,10 @@ class ShyCommandSignsPlugin : JavaPlugin(), CoroutinePlugin {
                 Version.VERSION_1_21_R3,
                 Version.VERSION_1_21_R4,
                 Version.VERSION_1_21_R5,
+                Version.VERSION_1_21_R6,
             )
         } else {
-            listOf(Version.VERSION_1_21_R5)
+            listOf(Version.VERSION_1_21_R6)
         }
 
         if (!Version.serverVersion.isCompatible(*versions.toTypedArray())) {
@@ -99,6 +100,9 @@ class ShyCommandSignsPlugin : JavaPlugin(), CoroutinePlugin {
             Bukkit.getPluginManager().disablePlugin(this)
             return
         }
+
+        // Register Plugin Channel
+        server.messenger.registerOutgoingPluginChannel(this, "BungeeCord")
 
         // Register Language
         val language = ShyCommandSignsLanguageImpl()
@@ -134,6 +138,15 @@ class ShyCommandSignsPlugin : JavaPlugin(), CoroutinePlugin {
         plugin.launch {
             signService.reload()
             Bukkit.getServer().consoleSender.sendMessage(prefix + ChatColor.GREEN + "Enabled ShyCommandSign " + plugin.description.version + " by Shynixn")
+        }
+    }
+
+    override fun execute(
+        coroutineContext: CoroutineContext,
+        f: suspend () -> Unit
+    ): Job {
+        return launch(coroutineContext) {
+            f.invoke()
         }
     }
 

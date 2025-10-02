@@ -19,6 +19,17 @@ e.g. a tag key of ``mynumber`` and tag value ``5`` can be used in the ``lines`` 
 
 Note: Signs can be removed by simply destroying the sign block.
 
+### /shycommandsigns server
+
+```
+/shycommandsigns server <server> [player]
+```
+
+Connects the player to a different BungeeCord or Velocity server.
+
+* Server: Name of the BungeeCord or Velocity server to send the player to.
+* Player: Optional player argument to execute the action for another player.
+
 ### /shycommandsigns reload
 
 ```
