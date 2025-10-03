@@ -29,4 +29,8 @@ interface ShyCommandSignsLanguage : LanguageProvider {
   var shyCommandSignsRightClickOnSign: LanguageItem
 
   var shyCommandSignsRightClickOnSignSuccess: LanguageItem
+
+  var shyCommandSignsServerCommandHint: LanguageItem
+
+  var shyCommandSignsServerMessage: LanguageItem
 }

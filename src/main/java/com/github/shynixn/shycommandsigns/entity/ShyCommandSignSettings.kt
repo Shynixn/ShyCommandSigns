@@ -24,6 +24,10 @@ class ShyCommandSignSettings(private val reloadFun: (ShyCommandSignSettings) -> 
 
     var addPermission: String = Permission.ADD.text
 
+    var serverPermission : String = Permission.SERVER.text
+
+    var otherPlayerPermission : String = Permission.OTHER_PLAYER.text
+
     var defaultSigns: List<Pair<String, String>> = listOf(
         "sign/sample_sign.yml" to "sample_sign.yml"
     )

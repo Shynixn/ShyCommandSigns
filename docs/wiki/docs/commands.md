@@ -1,23 +1,49 @@
-# Commands
+# Command Reference
 
-The following commands are available in ShyCommandSigns. You can access them by typing:
+Get started with ShyCommandSigns by using the help command:
 
 ```
 /shycommandsigns help 1
 ```
 
-### /shycommandsigns add
+## Core Commands
 
+### 📝 Adding Signs
 ```
 /shycommandsigns add <sign> [tagkey] [tagvalue]
 ```
 
-Adds a new sign request for the given player. After a player has right-clicked on a placed sign, this sign will be added to the list of locations.
-Tags can be used for sign placeholders per location. 
-e.g. a tag key of ``game`` and tag value ``cool game`` can be used in the ``lines`` and ``commands`` properties via the placeholder ``$game$``.
-e.g. a tag key of ``mynumber`` and tag value ``5`` can be used in the ``lines`` and ``commands`` properties via the placeholder ``$mynumber$``.
+Creates a new interactive sign using a predefined configuration.
+
+**Parameters:**
+- `<sign>`: The name of your sign configuration file
+- `[tagkey]`: Optional tag name for dynamic content
+- `[tagvalue]`: Optional value for the tag
+
+**Example Usage:**
+```
+/shycommandsigns add shop                  # Basic sign
+/shycommandsigns add shop price 100        # Sign with price tag
+/shycommandsigns add game arena lobby      # Game sign with arena tag
+```
+
+**Using Tags:**
+Tags allow you to create dynamic signs that can be reused with different values:
+- Use `$tagname$` in your configuration to reference tags
+- Example: Tag `game=lobby` can be used as `$game$` in sign text or commands
 
 Note: Signs can be removed by simply destroying the sign block.
+
+### /shycommandsigns server
+
+```
+/shycommandsigns server <server> [player]
+```
+
+Connects the player to a different BungeeCord or Velocity server.
+
+* Server: Name of the BungeeCord or Velocity server to send the player to.
+* Player: Optional player argument to execute the action for another player.
 
 ### /shycommandsigns reload
 
