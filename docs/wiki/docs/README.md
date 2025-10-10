@@ -14,4 +14,4 @@ ShyCommandSigns is a Minecraft server plugin that allows you to create interacti
 * Full compatibility with Bukkit and Folia servers
 * Integrated PlaceholderAPI support for dynamic content
 * Asynchronous execution for optimal performance
-* Extensive version support (1.8.R3 - 1.21.R5)
+* Extensive version support (1.8.R3 - 1.21.R6)
