@@ -3,7 +3,7 @@ package com.github.shynixn.shycommandsigns
 import com.github.shynixn.fasterxml.jackson.core.type.TypeReference
 import com.github.shynixn.mcutils.common.ConfigurationService
 import com.github.shynixn.mcutils.common.ConfigurationServiceImpl
-import com.github.shynixn.mcutils.common.CoroutinePlugin
+import com.github.shynixn.mcutils.common.CoroutineHandler
 import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.command.CommandService
 import com.github.shynixn.mcutils.common.command.CommandServiceImpl
@@ -40,7 +40,7 @@ class ShyCommandSignsDependencyInjectionModule(
 
         // Params
         module.addService<Plugin>(plugin)
-        module.addService<CoroutinePlugin>(plugin)
+        module.addService<CoroutineHandler>(plugin)
         module.addService<ShyCommandSignsLanguage>(language)
         module.addService<ShyCommandSignSettings>(settings)
         module.addService<PlaceHolderService>(placeHolderService)
@@ -60,6 +60,8 @@ class ShyCommandSignsDependencyInjectionModule(
         // Services
         module.addService<ShyCommandSignCommandExecutor> {
             ShyCommandSignCommandExecutor(
+                module.getService(),
+                module.getService(),
                 module.getService(),
                 module.getService(),
                 module.getService(),
@@ -95,7 +97,7 @@ class ShyCommandSignsDependencyInjectionModule(
             CommandServiceImpl(module.getService())
         }
         module.addService<ChatMessageService> {
-            ChatMessageServiceImpl(module.getService(), module.getService())
+            ChatMessageServiceImpl(module.getService(), module.getService(), module.getService())
         }
 
         // Developer Api.
