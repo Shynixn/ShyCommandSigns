@@ -2,9 +2,10 @@ package com.github.shynixn.shycommandsigns
 
 import com.github.shynixn.mccoroutine.folia.*
 import com.github.shynixn.mcutils.common.ChatColor
-import com.github.shynixn.mcutils.common.CoroutinePlugin
+import com.github.shynixn.mcutils.common.CoroutineHandler
 import com.github.shynixn.mcutils.common.Version
 import com.github.shynixn.mcutils.common.checkIfFoliaIsLoadable
+import com.github.shynixn.mcutils.common.commonServer
 import com.github.shynixn.mcutils.common.di.DependencyInjectionModule
 import com.github.shynixn.mcutils.common.language.reloadTranslation
 import com.github.shynixn.mcutils.common.placeholder.PlaceHolderService
@@ -22,7 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Level
 import kotlin.coroutines.CoroutineContext
 
-class ShyCommandSignsPlugin : JavaPlugin(), CoroutinePlugin {
+class ShyCommandSignsPlugin : JavaPlugin(), CoroutineHandler {
     private val prefix: String = ChatColor.BLUE.toString() + "[ShyCommandSigns] " + ChatColor.WHITE
     private var module: DependencyInjectionModule? = null
 
@@ -41,6 +42,7 @@ class ShyCommandSignsPlugin : JavaPlugin(), CoroutinePlugin {
 
     override fun onEnable() {
         Bukkit.getServer().consoleSender.sendMessage(prefix + ChatColor.GREEN + "Loading ShyCommandSign ...")
+        commonServer = Bukkit.getServer()
         this.saveDefaultConfig()
         this.reloadConfig()
         val versions = if (areLegacyVersionsIncluded) {
@@ -116,7 +118,7 @@ class ShyCommandSignsPlugin : JavaPlugin(), CoroutinePlugin {
             settings.coolDownTicks = plugin.config.getInt("global.clickCooldownTicks")
         }
         settings.reload()
-        val placeHolderService = PlaceHolderServiceImpl(this)
+        val placeHolderService = PlaceHolderServiceImpl(this, Bukkit.getPluginManager())
         this.module = ShyCommandSignsDependencyInjectionModule(
             this,
             settings,
