@@ -8,7 +8,6 @@ ShyCommandSigns is a plugin to make signs execute commands on click for Bukkit a
 * Bukkit and Folia compatible
 * PlaceHolderApi support
 * Runs asynchronously
-* Version support 1.8.R3 - 1.21.R7
 
 ## Installation
 
