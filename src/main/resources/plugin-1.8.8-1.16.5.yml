@@ -1,5 +1,5 @@
 name: ShyCommandSigns
-version: 1.4.1
+version: 1.5.0
 author: Shynixn
 main: com.github.shynixn.shycommandsigns.ShyCommandSignsPlugin
-softdepend: [ PlaceholderAPI]
+softdepend: [ PlaceholderAPI, WorldGuard]
