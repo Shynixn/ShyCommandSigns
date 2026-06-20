@@ -2,6 +2,7 @@ package com.github.shynixn.shycommandsigns.impl.service
 
 import com.github.shynixn.mccoroutine.folia.globalRegionDispatcher
 import com.github.shynixn.mccoroutine.folia.launch
+import com.github.shynixn.mccoroutine.folia.regionDispatcher
 import com.github.shynixn.mcutils.common.chat.ChatMessageService
 import com.github.shynixn.mcutils.common.repository.CacheRepository
 import com.github.shynixn.mcutils.common.toVector3d
@@ -13,10 +14,11 @@ import com.github.shynixn.shycommandsigns.entity.ShyCommandSignLocation
 import com.github.shynixn.shycommandsigns.entity.ShyCommandSignMeta
 import com.github.shynixn.shycommandsigns.entity.ShyCommandSignSettings
 import com.github.shynixn.shycommandsigns.entity.ShyCommandSignTag
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
-import java.util.*
+import com.github.shynixn.shycommandsigns.event.ShyCommandSignsCreateEvent
 
 class ShyCommandSignServiceImpl(
     private val repository: CacheRepository<ShyCommandSignMeta>,
@@ -75,15 +77,14 @@ class ShyCommandSignServiceImpl(
      */
     override fun isInCooldown(player: Player): Boolean {
         val timestamp = coolDown[player] ?: return false
-        val now = Date().time
-        return now - timestamp < (this.settings.coolDownTicks * 50)
+        return System.currentTimeMillis() - timestamp < (this.settings.coolDownTicks * 50)
     }
 
     /**
      * Sets the player to cooldown.
      */
     override fun addCooldown(player: Player) {
-        coolDown[player] = Date().time
+        coolDown[player] = System.currentTimeMillis()
     }
 
     /**
@@ -107,15 +108,19 @@ class ShyCommandSignServiceImpl(
         }
 
         // Check if location is present anywhere and remove it.
+        val modifiedMetas = mutableSetOf<ShyCommandSignMeta>()
         for (signMeta in signMetas) {
             for (existingSignLocation in signMeta.locations.toTypedArray()) {
                 val existingLocation = existingSignLocation.location
 
                 if (existingLocation.world == location.world!!.name && existingLocation.x == location.x && existingLocation.y == location.y && existingLocation.z == location.z) {
                     signMeta.locations.remove(existingSignLocation)
-                    repository.save(signMeta)
+                    modifiedMetas.add(signMeta)
                 }
             }
+        }
+        for (modifiedMeta in modifiedMetas) {
+            repository.save(modifiedMeta)
         }
 
         val tags = ArrayList<ShyCommandSignTag>()
@@ -127,11 +132,15 @@ class ShyCommandSignServiceImpl(
             })
         }
 
-        selectedSignMeta.locations.add(ShyCommandSignLocation().also {
+        val newSignLocation = ShyCommandSignLocation().also {
             it.location = location.toVector3d()
             it.tags = tags
-        })
+        }
+        selectedSignMeta.locations.add(newSignLocation)
         repository.save(selectedSignMeta)
+        plugin.launch(plugin.regionDispatcher(location)) {
+            Bukkit.getPluginManager().callEvent(ShyCommandSignsCreateEvent(newSignLocation))
+        }
         reload()
 
         plugin.launch(plugin.globalRegionDispatcher) {

@@ -76,10 +76,11 @@ class ShyCommandSignsPlugin : JavaPlugin(), CoroutineHandler {
                 Version.VERSION_1_21_R5,
                 Version.VERSION_1_21_R6,
                 Version.VERSION_1_21_R7,
-                Version.VERSION_26_R1,
+                Version.VERSION_26_1_R1,
+                Version.VERSION_26_2_R1,
             )
         } else {
-            listOf(Version.VERSION_26_R1)
+            listOf(Version.VERSION_26_2_R1)
         }
 
         if (!Version.serverVersion.isCompatible(*versions.toTypedArray())) {
@@ -113,10 +114,11 @@ class ShyCommandSignsPlugin : JavaPlugin(), CoroutineHandler {
         reloadTranslation(language)
         logger.log(Level.INFO, "Loaded language file.")
 
-        // Module
+        // Modules
         val plugin = this
         val settings = ShyCommandSignSettings { settings ->
             settings.coolDownTicks = plugin.config.getInt("global.clickCooldownTicks")
+            settings.commandAliases = plugin.config.getStringList("commands.shycommandsigns.aliases")
         }
         settings.reload()
         val placeHolderService = PlaceHolderServiceImpl(this, Bukkit.getPluginManager())
