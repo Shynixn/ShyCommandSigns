@@ -5,7 +5,7 @@ import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 
 /**
- * Base BlockBall event where all BlockBall events inherit from.
+ * Base ShyCommandSigns event where all ShyCommandSigns events inherit from.
  */
 open class ShyCommandSignsEvent : Event(), Cancellable {
     private var cancelled: Boolean = false
