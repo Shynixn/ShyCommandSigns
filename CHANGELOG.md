@@ -1,5 +1,13 @@
 # Changelog
 
+## Release 1.7.0
+
+### Changes
+
+* #20 Added support for Minecraft 26.3.x
+
+---
+
 ## Release 1.6.1
 
 ### Bugs/Issues
